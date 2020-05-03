@@ -28,8 +28,7 @@ def initData(filename):
 			domainlist.append(Domain(name,label))
 
 def main():
-	initData("baddomaininfo")
-	initData("gooddomaininfo")
+	initData("train.txt")
 	featureMatrix = []
 	labelList = []
 	for item in domainlist:
@@ -38,10 +37,23 @@ def main():
 
 	clf = RandomForestClassifier(random_state=0)
 	clf.fit(featureMatrix,labelList)
-	print(clf.predict([[3600,10000,3]]))
-	print(clf.predict([[3600,3600,2]]))
-	print(clf.predict([[100,100,3]]))
-	print(clf.predict([[100,100,1]]))
+	
+#test
+	f = open("test.txt",'r');
+	fout = open("result.txt",'w');
+	for line in f:
+		line = line.strip()
+		if line.startswith("#") or line =="":
+			continue
+		tokens = line.split(",")
+		name = tokens[0]
+		result=clf.predict([processData(name)]);
+		if(result==0):
+			fout.write(name + ",dga\n")
+		else:
+			fout.write(name + ",notdga\n"
+	f.close();
+	fout.close();
 
 if __name__ == '__main__':
 	main()
