@@ -3,9 +3,19 @@ import numpy as np
 
 domainlist = []
 class Domain:
-	def __init__(self,_name,_label, _min, _max, _numip, _ipset):
+	def __init__(self,_name,_label):
 		self.name = _name
-		self.label = _label	
+		self.label = _label
+
+
+	def returnData(self):
+		return processData(self.name)
+
+	def returnLabel(self):
+		if self.label == "dga":
+			return 1
+		else:
+			return 0
 
 		
 def processData(name):
@@ -48,10 +58,10 @@ def main():
 		tokens = line.split(",")
 		name = tokens[0]
 		result=clf.predict([processData(name)]);
-		if(result==0):
+		if(result == 0):
 			fout.write(name + ",dga\n")
 		else:
-			fout.write(name + ",notdga\n"
+			fout.write(name + ",notdga\n")
 	f.close();
 	fout.close();
 
